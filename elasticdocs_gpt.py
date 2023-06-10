@@ -52,24 +52,11 @@ def search(query_text):
         }
     }
 
-    knn = {
-        "field": "title-vector",
-        "k": 1,
-        "num_candidates": 20,
-        "query_vector_builder": {
-            "text_embedding": {
-                "model_id": "sentence-transformers__all-distilroberta-v1",
-                "model_text": query_text
-            }
-        },
-        "boost": 24
-    }
 
     fields = ["title", "body_content", "url"]
     index = 'search-elastic-docs'
     resp = es.search(index=index,
                      query=query,
-                     knn=knn,
                      fields=fields,
                      size=1,
                      source=False)
