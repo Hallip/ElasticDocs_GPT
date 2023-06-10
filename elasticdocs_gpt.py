@@ -34,21 +34,25 @@ def search(query_text):
     es = es_connect(cid, cu, cp)
 
     # Elasticsearch query (BM25) and kNN configuration for hybrid search
-    query = {
+    query = {  
         "bool": {
-            "must": [{
+            "should": [
+                {
                 "match": {
                     "title": {
-                        "query": query_text,
-                        "boost": 1
+                    "query": query_text,
+                    "boost": 1
                     }
                 }
-            }],
-            "filter": [{
-                "exists": {
-                    "field": "title-vector"
+                },
+                {
+                "match": {
+                    "body_content": {
+                    "query": query_text
+                    }
                 }
-            }]
+                }
+            ]
         }
     }
 
